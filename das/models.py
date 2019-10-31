@@ -1,13 +1,32 @@
+# -*- coding: utf-8 -*-
 from django.db import models
+from taggit.managers import TaggableManager
 
 # Create your models here.
 class Province(models.Model):
 
     class Meta:
         verbose_name = "省份"
-        verbose_name_plural = "Provinces"
+        verbose_name_plural = "省份"
 
     name = models.CharField(verbose_name='省份名称', max_length=50)
+
+    def __str__(self):
+        return self.name
+
+class City(models.Model):
+
+    class Meta:
+        verbose_name = "城市"
+        verbose_name_plural = "城市"
+
+    name = models.CharField(verbose_name='城市', max_length=50)
+    province = models.ForeignKey(
+        Province,
+        related_name='cities',
+        on_delete=models.CASCADE,
+        verbose_name='省份',
+    )
 
     def __str__(self):
         return self.name
@@ -16,8 +35,8 @@ class Province(models.Model):
 class Rank(models.Model):
 
     class Meta:
-        verbose_name = "综合排名"
-        verbose_name_plural = "Ranks"
+        verbose_name = "排名"
+        verbose_name_plural = "排名"
 
     name = models.CharField(verbose_name='排名', max_length=50)
 
@@ -51,7 +70,7 @@ class AdmissionYear(models.Model):
 
     class Meta:
         verbose_name = "招生年份"
-        verbose_name_plural = "AdmissionYears"
+        verbose_name_plural = "招生年份"
 
     year = models.CharField(verbose_name='年份', max_length=50)
 
@@ -146,3 +165,23 @@ class School(models.Model):
     def __str__(self):
         return self.name
 
+class Univercity(models.Model):
+
+    class Meta:
+        verbose_name = "高校"
+        verbose_name_plural = "高校"
+
+    name = models.CharField(verbose_name='院校名称', max_length=255)
+    total_rank = models.IntegerField(verbose_name='', default=999)
+    project_tags = TaggableManager()
+
+    city = models.ForeignKey(
+        City,
+        related_name='univercities',
+        on_delete=models.CASCADE,
+        verbose_name='所在城市',
+        null=True,
+    )
+
+    def __str__(self):
+        return self.name
