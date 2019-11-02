@@ -174,6 +174,7 @@ class Univercity(models.Model):
     name = models.CharField(verbose_name='院校名称', max_length=255)
     total_rank = models.IntegerField(verbose_name='', default=999)
     project_tags = TaggableManager()
+    is_private = models.BooleanField(verbose_name='是否民办院校', default=False)
 
     city = models.ForeignKey(
         City,
@@ -185,3 +186,28 @@ class Univercity(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Subject(models.Model):
+    SC = '理科'
+    LA = '文科'
+
+    SUBJECT_TYPE_CHOICES = [
+        (SC, '理科'),
+        (LA, '文科'),
+    ]
+
+    class Meta:
+        verbose_name = "学科专业"
+        verbose_name_plural = "学科专业"
+
+    type_name = models.CharField(
+        verbose_name='专业类型', 
+        max_length=2, 
+        choices=SUBJECT_TYPE_CHOICES,
+    )
+    name = models.CharField(verbose_name='专业', max_length=255)
+    
+    def __str__(self):
+        return self.name
+    
