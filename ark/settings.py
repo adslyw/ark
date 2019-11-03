@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
+from ark import dbconfig
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'ark.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ark',
-        'USER': 'root',
-        'PASSWORD': 'adslyw',
-        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        'NAME': dbconfig.DB_NAME,
+        'USER': dbconfig.DB_USER,
+        'PASSWORD': dbconfig.DB_PASSWORD,
+        'HOST': dbconfig.DB_HOST,   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
