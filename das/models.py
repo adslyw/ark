@@ -20,7 +20,7 @@ class City(models.Model):
         verbose_name = "城市"
         verbose_name_plural = "城市"
 
-    name = models.CharField(verbose_name='城市', max_length=50)
+    name = models.CharField(verbose_name='城市', max_length=50, unique=True)
     province = models.ForeignKey(
         Province,
         related_name='cities',
@@ -59,9 +59,9 @@ class AdmissionBatch(models.Model):
 
     class Meta:
         verbose_name = "录取批次"
-        verbose_name_plural = "AdmissionBatchs"
+        verbose_name_plural = "录取批次"
 
-    batch_name = models.CharField(verbose_name='批次名称', max_length=50)
+    batch_name = models.CharField(verbose_name='批次名称', max_length=100, unique=True)
 
     def __str__(self):
         return self.batch_name
@@ -172,7 +172,7 @@ class Univercity(models.Model):
         verbose_name_plural = "高校"
 
     name = models.CharField(verbose_name='院校名称', max_length=255)
-    total_rank = models.IntegerField(verbose_name='', default=999)
+    total_rank = models.IntegerField(verbose_name='综合排名', default=999)
     project_tags = TaggableManager()
     is_private = models.BooleanField(verbose_name='是否民办院校', default=False)
 
