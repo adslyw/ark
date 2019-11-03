@@ -188,6 +188,18 @@ class Univercity(models.Model):
         return self.name
 
 
+class SubjectType(models.Model):
+
+    class Meta:
+        verbose_name = "学科类型"
+        verbose_name_plural = "学科类型"
+
+    type_name = models.CharField(verbose_name='类型', max_length=50, unique=True)
+    def __str__(self):
+        return self.type_name
+
+
+
 class Subject(models.Model):
     SC = '理科'
     LA = '文科'
@@ -210,4 +222,33 @@ class Subject(models.Model):
     
     def __str__(self):
         return self.name
-    
+
+class ScoreLine(models.Model):
+
+    class Meta:
+        verbose_name = "分数线"
+        verbose_name_plural = "分数线"
+        unique_together = [['subject_type', 'admission_batch', 'admission_year']]
+
+    score = models.IntegerField(verbose_name='分数')
+    subject_type = models.ForeignKey(
+        SubjectType,
+        related_name='scorelines',
+        on_delete=models.CASCADE,
+        verbose_name='学科类型'
+    )
+    admission_batch = models.ForeignKey(
+        AdmissionBatch,
+        related_name='scorelines',
+        on_delete=models.CASCADE,
+        verbose_name='录取批次'
+    )
+    admission_year = models.ForeignKey(
+        AdmissionYear,
+        related_name='scorelines',
+        on_delete=models.CASCADE,
+        verbose_name='招生年份',
+    )
+
+    def __str__(self):
+        return str(self.score)
