@@ -107,21 +107,97 @@ def fetch_schools():
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
         for line in soup.select(selector):
+            school_code = line.select('td:nth-child(3)')[0].text
             school_name = line.select('td:nth-child(4)')[0].text
-            Univercity.objects.get_or_create(
+            # Univercity.objects.get_or_create(
+            #     name=school_name,
+            # )
+            print(school_code, school_name)
+
+
+def fetch_school_city():
+    url = 'http://m.gaosan.com/gaokao/150460.html'
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    for line in soup.select('#data150460 > table > tbody > tr'):
+        school_name = line.select('td:nth-child(1)')[0].text
+        city_name = line.select('td:nth-child(4)')[0].text.replace('市', '')
+        comment = line.select('td:nth-child(6)')[0].text
+        try:
+            u = Univercity.objects.get(
                 name=school_name,
             )
-            print(school_name)
-    #data223294 > table > tbody > tr:nth-child(2)
-    #data223294 > table > tbody > tr:nth-child(3)
-    # school = soup.select('#data223294 > table > tbody > tr:nth-child(2) > td:nth-child(4)')[0].text
-    # print(school)
+            c = City.objects.get(
+                name=city_name
+            )
+        except Exception:
+            continue
+
+        print(school_name, city_name, comment)
+        u.city = c
+        if comment == '民办':
+            u.is_private = True
+        else:
+            u.is_private = False
+
+        u.save()
+
+
+def fetch_school_rank():
+    params = [
+        ['https://www.dxsbb.com/news/5463.html', '#newsContent > table:nth-child(14) > tbody > tr'],
+        ['https://www.dxsbb.com/news/5463_2.html', '#newsContent > table:nth-child(1) > tbody > tr']
+    ]
+
+    for url, selector in params:
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
+        for line in soup.select(selector):
+            rank = line.select('td:nth-child(1)')[0].text
+            school_name = line.select('td:nth-child(2)')[0].text
+            try:
+                u = Univercity.objects.get(
+                    name=school_name,
+                )
+            except Exception:
+                continue
+            print(rank, school_name)
+            if rank != '暂无':
+                u.total_rank = int(rank)
+                u.save()
+
+def fetch_school_code():
+    params  = [
+        ['http://www.gaosan.com/gaokao/222526.html', '#data222526 > table > tbody > tr'],
+        ['http://www.gaosan.com/gaokao/223294.html', '#data223294 > table > tbody > tr'],
+    ]
+
+    for url, selector in params:
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
+        for line in soup.select(selector):
+            school_code = line.select('td:nth-child(3)')[0].text
+            school_name = line.select('td:nth-child(4)')[0].text
+            try:
+                u = Univercity.objects.get(
+                    name=school_name,
+                )
+            except Exception:
+                continue
+            print(school_code, school_name)
+            UnivercityCode.objects.get_or_create(
+                code=school_code,
+                univercity=u,
+            )
 
 if __name__ == '__main__':
     # fetch_provinces()
     # fetch_exam_divisions()
     # fetch_admission_batches()
     # fetch_admission_years()
-    fetch_schools()
-
-
+    # fetch_schools()
+    # fetch_school_city()
+    # for school in Univercity.objects.filter(total_rank=999):
+    #     print(school.name)
+    # fetch_school_rank()
+    fetch_school_code()

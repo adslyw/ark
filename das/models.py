@@ -173,7 +173,7 @@ class Univercity(models.Model):
 
     name = models.CharField(verbose_name='院校名称', max_length=255)
     total_rank = models.IntegerField(verbose_name='综合排名', default=999)
-    project_tags = TaggableManager()
+    project_tags = TaggableManager(verbose_name='院校特色', blank=True, help_text='多个特色输入请用逗号分隔')
     is_private = models.BooleanField(verbose_name='是否民办院校', default=False)
 
     city = models.ForeignKey(
@@ -214,12 +214,12 @@ class Subject(models.Model):
         verbose_name_plural = "学科专业"
 
     type_name = models.CharField(
-        verbose_name='专业类型', 
-        max_length=2, 
+        verbose_name='专业类型',
+        max_length=2,
         choices=SUBJECT_TYPE_CHOICES,
     )
     name = models.CharField(verbose_name='专业', max_length=255)
-    
+
     def __str__(self):
         return self.name
 
@@ -252,3 +252,20 @@ class ScoreLine(models.Model):
 
     def __str__(self):
         return str(self.score)
+
+class UnivercityCode(models.Model):
+
+    class Meta:
+        verbose_name = "院校代号"
+        verbose_name_plural = "院校代号"
+
+    code = models.CharField(verbose_name='代号', max_length=50, unique=True)
+    univercity = models.ForeignKey(
+        Univercity,
+        related_name='univercity_codes',
+        on_delete=models.CASCADE,
+        verbose_name='高校'
+    )
+
+    def __str__(self):
+        return self.code
