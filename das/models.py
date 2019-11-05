@@ -269,3 +269,42 @@ class UnivercityCode(models.Model):
 
     def __str__(self):
         return self.code
+
+class Plan(models.Model):
+
+    class Meta:
+        verbose_name = "招生计划"
+        verbose_name_plural = "招生计划"
+
+    univercity_code = models.ForeignKey(
+        UnivercityCode,
+        related_name='plans',
+        on_delete=models.CASCADE,
+        verbose_name='院校代号'
+    )
+    subject_type = models.ForeignKey(
+        SubjectType,
+        related_name='plans',
+        on_delete=models.CASCADE,
+        verbose_name='学科类型',
+    )
+    admission_batch = models.ForeignKey(
+        AdmissionBatch,
+        related_name='plans',
+        on_delete=models.CASCADE,
+        verbose_name='录取批次',
+    )
+    admission_year = models.ForeignKey(
+        AdmissionYear,
+        related_name='plans',
+        on_delete=models.CASCADE,
+        verbose_name='录取年份',
+    )
+    plan_amount = models.IntegerField(verbose_name='计划数', default=0)
+    actual_amount = models.IntegerField(verbose_name='实录数', default=0)
+    highest_score = models.FloatField(verbose_name='最高分', default=0.0)
+    lowest_score = models.FloatField(verbose_name='最低分', default=0.0)
+    average_score = models.FloatField(verbose_name='平均分', default=0.0)
+
+    def __str__(self):
+        return str(self.plan_amount)
