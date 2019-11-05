@@ -2,7 +2,8 @@ from django.contrib import admin
 from das.models import *
 
 class UnivercityAdmin(admin.ModelAdmin):
-    # list_display = ['tag_list']
+    list_display = ['name', 'tag_list']
+    search_fields = ['name']
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('project_tags')
@@ -11,7 +12,7 @@ class UnivercityAdmin(admin.ModelAdmin):
         return ", ".join(o.name for o in obj.project_tags.all())
 
 admin.site.register(Rank)
-admin.site.register(Univercity)
+admin.site.register(Univercity, UnivercityAdmin)
 admin.site.register(Province)
 # admin.site.register(ExamDivision)
 admin.site.register(AdmissionBatch)
