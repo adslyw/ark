@@ -14,6 +14,10 @@ class UnivercityAdmin(admin.ModelAdmin):
     def get_city_name(self, obj):
         return obj.city.name if obj.city else ""
 
+    get_city_name.short_description = '所在城市'
+    get_city_name.admin_order_field = 'city'
+
+
 class CityAdmin(admin.ModelAdmin):
     # list_display = ['name']
     search_fields = ['name']
