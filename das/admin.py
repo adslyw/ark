@@ -2,14 +2,17 @@ from django.contrib import admin
 from das.models import *
 
 class UnivercityAdmin(admin.ModelAdmin):
-    list_display = ['name', 'tag_list']
-    search_fields = ['name']
+    list_display = ['name', 'get_city_name', 'tag_list']
+    search_fields = ['name', 'city__name']
 
     def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related('project_tags')
+        return super().get_queryset(request).prefetch_related('project_tags', 'city')
 
     def tag_list(self, obj):
         return ", ".join(o.name for o in obj.project_tags.all())
+
+    def get_city_name(self, obj):
+        return obj.city.name if obj.city else ""
 
 class CityAdmin(admin.ModelAdmin):
     # list_display = ['name']
