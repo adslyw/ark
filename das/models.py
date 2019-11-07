@@ -201,23 +201,11 @@ class SubjectType(models.Model):
 
 
 class Subject(models.Model):
-    SC = '理科'
-    LA = '文科'
-
-    SUBJECT_TYPE_CHOICES = [
-        (SC, '理科'),
-        (LA, '文科'),
-    ]
 
     class Meta:
         verbose_name = "学科门类"
         verbose_name_plural = "学科门类"
 
-    type_name = models.CharField(
-        verbose_name='专业类型',
-        max_length=2,
-        choices=SUBJECT_TYPE_CHOICES,
-    )
     name = models.CharField(verbose_name='专业', max_length=255)
     subject_type = models.ForeignKey(
         SubjectType,
@@ -311,11 +299,11 @@ class Plan(models.Model):
     )
     plan_amount = models.IntegerField(verbose_name='计划数', default=0)
     actual_amount = models.IntegerField(verbose_name='实录数', default=0)
-    highest_score = models.FloatField(verbose_name='最高分', default=0.0)
-    lowest_score = models.FloatField(verbose_name='最低分', default=0.0)
-    average_score = models.FloatField(verbose_name='平均分', default=0.0)
+    highest_score = models.IntegerField(verbose_name='最高分', default=0)
     highest_rank = models.IntegerField(verbose_name='最高位次', default=0)
+    lowest_score = models.IntegerField(verbose_name='最低分', default=0)
     lowest_rank = models.IntegerField(verbose_name='最低位次', default=0)
+    average_score = models.FloatField(verbose_name='平均分', default=0.0)
 
     def __str__(self):
         return str(self.plan_amount)

@@ -192,46 +192,73 @@ def fetch_school_code():
 
 def fetch_school_plan():
     params  = [
-        [2019, '本科一批', 'http://www.sneac.com/fujin/2019YB-ZS-LG.html', 'table > tr'],
-        [2019, '本科一批', 'http://www.sneac.com/fujin/2019YB-ZS-WS.html', 'table > tr'],
-        [2018, '本科一批', 'http://www.sneac.com/2018YBZS-LG.html', 'table > tbody > tr'],
-        [2018, '本科一批', 'http://www.sneac.com/2018YBZS-WS.html', 'table > tbody > tr'],
         [2017, '本科一批', 'http://www.sneac.com/2017YBZS--LG.html', 'table > tbody > tr'],
         [2017, '本科一批', 'http://www.sneac.com/2017YBZS--WS.html', 'table > tbody > tr'],
-        [2019, '本科二批', 'http://www.sneac.com/fujin/2019-EB-ZS-LG.html', 'table > tr'],
-        [2019, '本科二批', 'http://www.sneac.com/fujin/2019-EB-ZS-WS.html', 'table > tr'],
-        [2018, '本科二批', 'http://www.sneac.com/2018EBZS-LG.html', 'table > tbody > tr'],
-        [2018, '本科二批', 'http://www.sneac.com/2018EBZS-WS.html', 'table > tbody > tr'],
         [2017, '本科二批', 'http://www.sneac.com/EBZS-LG.html', 'table > tbody > tr'],
         [2017, '本科二批', 'http://www.sneac.com/EBZS-WS.html', 'table > tbody > tr'],
+        [2018, '本科一批', 'http://www.sneac.com/2018YBZS-LG.html', 'table > tbody > tr'],
+        [2018, '本科一批', 'http://www.sneac.com/2018YBZS-WS.html', 'table > tbody > tr'],
+        [2018, '本科二批', 'http://www.sneac.com/2018EBZS-LG.html', 'table > tbody > tr'],
+        [2018, '本科二批', 'http://www.sneac.com/2018EBZS-WS.html', 'table > tbody > tr'],
+        [2019, '本科一批', 'http://www.sneac.com/fujin/2019YB-ZS-LG.html', 'table > tr'],
+        [2019, '本科一批', 'http://www.sneac.com/fujin/2019YB-ZS-WS.html', 'table > tr'],
+        [2019, '本科二批', 'http://www.sneac.com/fujin/2019-EB-ZS-LG.html', 'table > tr'],
+        [2019, '本科二批', 'http://www.sneac.com/fujin/2019-EB-ZS-WS.html', 'table > tr'],
     ]
 # body > center:nth-child(1) > table > tbody > tr:nth-child(2) > td:nth-child(2)
 # body > center:nth-child(1) > table > tbody > tr:nth-child(1)
 
-    for year, pici, url, selector in params:
+    for year, batch, url, selector in params:
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
         # print(soup.select('table > tr'))
         for line in soup.select(selector):
-            # print(line)
-            sublect_type = line.select('td:nth-child(2)')[0].text.replace(' ', '').strip()
             school_code = line.select('td:nth-child(3)')[0].text.replace(' ', '').strip()
+            if school_code == '院校代号':
+                continue
+            sublect_type = line.select('td:nth-child(2)')[0].text.replace(' ', '').strip()
             school_name = line.select('td:nth-child(4)')[0].text.replace(' ', '').replace("\r\n", '').replace("\n", '').strip()
-            plan_amount = line.select('td:nth-child(5)')[0].text.replace(' ', '').strip()
-            actual_amount = line.select('td:nth-child(6)')[0].text.replace(' ', '').strip()
+            plan_amount = line.select('td:nth-child(5)')[0].text.replace(' ', '').strip().replace('-', '0')
+            actual_amount = line.select('td:nth-child(6)')[0].text.replace(' ', '').strip().replace('-', '0')
             # highest_score = line.select('td:nth-child(4)')[0].text.replace(' ', '').strip()
-            lowest_score = line.select('td:nth-child(7)')[0].text.replace(' ', '').strip()
+            lowest_score = line.select('td:nth-child(7)')[0].text.replace(' ', '').strip().replace('-', '0')
             # average_score = line.select('td:nth-child(4)')[0].text.replace(' ', '').strip()
-            lowest_rank = line.select('td:nth-child(8)')[0].text.replace(' ', '').strip()
-            # try:
-            #     u = Univercity.objects.get(
-            #         name=school_name,
-            #     )
-            # except Exception:
-            #     continue
+            lowest_rank = line.select('td:nth-child(8)')[0].text.replace(' ', '').strip().replace('-', '0')
+
+            a_y = AdmissionYear.objects.get(year=year)
+            a_b = AdmissionBatch.objects.get(batch_name=batch)
+            u = Univercity.objects.filter(
+                name=school_name,
+            ).first()
+            s_t = SubjectType.objects.get(type_name=sublect_type)
+            u_c, _ = UnivercityCode.objects.get_or_create(
+                code=school_code,
+            )
+            u_c.univercity_name_alias=school_name
+            u_c.save()
+
+            if u:
+                u_c.univercity = u
+                u_c.save()
+
+            plan, _ = Plan.objects.get_or_create(
+                univercity_code=u_c,
+                subject_type=s_t,
+                admission_batch=a_b,
+                admission_year=a_y,
+            )
+            plan.plan_amount = int(plan_amount)
+            plan.actual_amount = int(actual_amount)
+            plan.lowest_score = int(lowest_score)
+            # plan.highest_score =
+            # plan.average_score =
+            # plan.highest_rank =
+            plan.lowest_rank = int(lowest_rank)
+            plan.save()
+
             print(
                 year,
-                pici,
+                batch,
                 sublect_type,
                 school_code,
                 school_name,
