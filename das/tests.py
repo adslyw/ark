@@ -190,6 +190,61 @@ def fetch_school_code():
                 univercity=u,
             )
 
+def fetch_school_plan():
+    params  = [
+        [2019, '本科一批', 'http://www.sneac.com/fujin/2019YB-ZS-LG.html', 'table > tr'],
+        [2019, '本科一批', 'http://www.sneac.com/fujin/2019YB-ZS-WS.html', 'table > tr'],
+        [2018, '本科一批', 'http://www.sneac.com/2018YBZS-LG.html', 'table > tbody > tr'],
+        [2018, '本科一批', 'http://www.sneac.com/2018YBZS-WS.html', 'table > tbody > tr'],
+        [2017, '本科一批', 'http://www.sneac.com/2017YBZS--LG.html', 'table > tbody > tr'],
+        [2017, '本科一批', 'http://www.sneac.com/2017YBZS--WS.html', 'table > tbody > tr'],
+        [2019, '本科二批', 'http://www.sneac.com/fujin/2019-EB-ZS-LG.html', 'table > tr'],
+        [2019, '本科二批', 'http://www.sneac.com/fujin/2019-EB-ZS-WS.html', 'table > tr'],
+        [2018, '本科二批', 'http://www.sneac.com/2018EBZS-LG.html', 'table > tbody > tr'],
+        [2018, '本科二批', 'http://www.sneac.com/2018EBZS-WS.html', 'table > tbody > tr'],
+        [2017, '本科二批', 'http://www.sneac.com/EBZS-LG.html', 'table > tbody > tr'],
+        [2017, '本科二批', 'http://www.sneac.com/EBZS-WS.html', 'table > tbody > tr'],
+    ]
+# body > center:nth-child(1) > table > tbody > tr:nth-child(2) > td:nth-child(2)
+# body > center:nth-child(1) > table > tbody > tr:nth-child(1)
+
+    for year, pici, url, selector in params:
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
+        # print(soup.select('table > tr'))
+        for line in soup.select(selector):
+            # print(line)
+            sublect_type = line.select('td:nth-child(2)')[0].text.replace(' ', '').strip()
+            school_code = line.select('td:nth-child(3)')[0].text.replace(' ', '').strip()
+            school_name = line.select('td:nth-child(4)')[0].text.replace(' ', '').replace("\r\n", '').replace("\n", '').strip()
+            plan_amount = line.select('td:nth-child(5)')[0].text.replace(' ', '').strip()
+            actual_amount = line.select('td:nth-child(6)')[0].text.replace(' ', '').strip()
+            # highest_score = line.select('td:nth-child(4)')[0].text.replace(' ', '').strip()
+            lowest_score = line.select('td:nth-child(7)')[0].text.replace(' ', '').strip()
+            # average_score = line.select('td:nth-child(4)')[0].text.replace(' ', '').strip()
+            lowest_rank = line.select('td:nth-child(8)')[0].text.replace(' ', '').strip()
+            # try:
+            #     u = Univercity.objects.get(
+            #         name=school_name,
+            #     )
+            # except Exception:
+            #     continue
+            print(
+                year,
+                pici,
+                sublect_type,
+                school_code,
+                school_name,
+                plan_amount,
+                actual_amount,
+                lowest_score,
+                lowest_rank,
+            )
+            # UnivercityCode.objects.get_or_create(
+            #     code=school_code,
+            #     univercity=u,
+            # )
+
 if __name__ == '__main__':
     # fetch_provinces()
     # fetch_exam_divisions()
@@ -200,4 +255,5 @@ if __name__ == '__main__':
     # for school in Univercity.objects.filter(total_rank=999):
     #     print(school.name)
     # fetch_school_rank()
-    fetch_school_code()
+    # fetch_school_code()
+    fetch_school_plan()

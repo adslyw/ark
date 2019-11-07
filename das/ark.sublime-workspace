@@ -1,0 +1,448 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"lo",
+				"lowest_score"
+			],
+			[
+				"admi",
+				"admin"
+			],
+			[
+				"mf",
+				"mfloat\tFloatField (mfloat)"
+			],
+			[
+				"U",
+				"UnivercityCode"
+			],
+			[
+				"uni",
+				"UnivercityCode"
+			],
+			[
+				"fk",
+				"fk\tForeignKey (fk)"
+			],
+			[
+				"sch",
+				"school_code"
+			],
+			[
+				"re",
+				"register"
+			],
+			[
+				"uniqu",
+				"unique"
+			],
+			[
+				"case",
+				"CASCADE"
+			],
+			[
+				"con",
+				"continue"
+			],
+			[
+				"mi",
+				"mint\tIntegerField (mint)"
+			],
+			[
+				"get",
+				"get_or_create"
+			],
+			[
+				"univer",
+				"Univercitys"
+			],
+			[
+				"sele",
+				"selector"
+			],
+			[
+				"url",
+				"url_l2"
+			],
+			[
+				"M",
+				"Model"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/home/ads/src/ark/ark/dbconfig.py",
+			"settings":
+			{
+				"buffer_size": 104,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tests.py",
+			"settings":
+			{
+				"buffer_size": 8307,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "models.py",
+			"settings":
+			{
+				"buffer_size": 7619,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "admin.py",
+			"settings":
+			{
+				"buffer_size": 1348,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"virt",
+				"Build With: Python + Virtualenv"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/ads/src/ark",
+		"/home/ads/src/ark/ark",
+		"/home/ads/src/ark/das"
+	],
+	"file_history":
+	[
+		"/home/ads/未能匹配院校名称.txt",
+		"/home/ads/src/ark/das/admin.py",
+		"/home/ads/src/ark/requirements.txt",
+		"/home/ads/src/ark/ark/settings.py",
+		"/home/ads/src/ark/das/tests.py",
+		"/home/ads/src/ark/das/models.py",
+		"/home/ads/src/ark/.gitignore",
+		"/home/ads/.config/sublime-text-3/Packages/User/Virtualenv.sublime-settings",
+		"/home/ads/.config/sublime-text-3/Packages/Virtualenv/README.md",
+		"/home/ads/src/ark/das/migrations/0001_initial.py",
+		"/home/ads/src/ark/das/ark.sublime-project",
+		"/home/ads/.config/sublime-text-3/Packages/User/source.sublime-build",
+		"/home/ads/.config/sublime-text-3/Packages/User/Package Control.sublime-settings",
+		"/home/ads/.config/sublime-text-3/Packages/Package Control/Package Control.sublime-settings",
+		"/home/ads/src/railsapp/blog/shared/pids/unicorn.pid",
+		"/home/ads/src/railsapp/blog/shared/sockets/unicorn.sock",
+		"/home/ads/src/railsapp/blog/shared/log/unicorn.stderr.log"
+	],
+	"find":
+	{
+		"height": 32.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"$",
+			"MyModel"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			" ",
+			"Univercity"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/home/ads/src/ark/ark/dbconfig.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 104,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								102,
+								102
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "tests.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8307,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3837,
+								3837
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2046.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "models.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7619,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6967,
+								6967
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6016.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "admin.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1348,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								595,
+								595
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Djaneiro/Syntaxes/Python Django.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 32.0
+	},
+	"input":
+	{
+		"height": 40.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 531.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/Virtualenv/Python + Virtualenv.sublime-build",
+	"project": "ark.sublime-project",
+	"replace":
+	{
+		"height": 60.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"set",
+				"ark/settings.py"
+			],
+			[
+				"",
+				"~/.config/sublime-text-3/Packages/User/Virtualenv.sublime-settings"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 227.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -35,10 +35,10 @@ class City(models.Model):
 class Rank(models.Model):
 
     class Meta:
-        verbose_name = "排名"
-        verbose_name_plural = "排名"
+        verbose_name = "学科档次"
+        verbose_name_plural = "学科档次"
 
-    name = models.CharField(verbose_name='排名', max_length=50)
+    name = models.CharField(verbose_name='档次', max_length=50)
 
     def __str__(self):
         return self.name
@@ -168,8 +168,8 @@ class School(models.Model):
 class Univercity(models.Model):
 
     class Meta:
-        verbose_name = "高校"
-        verbose_name_plural = "高校"
+        verbose_name = "院校信息"
+        verbose_name_plural = "院校信息"
 
     name = models.CharField(verbose_name='院校名称', max_length=255)
     total_rank = models.IntegerField(verbose_name='综合排名', default=999)
@@ -191,8 +191,8 @@ class Univercity(models.Model):
 class SubjectType(models.Model):
 
     class Meta:
-        verbose_name = "学科类型"
-        verbose_name_plural = "学科类型"
+        verbose_name = "考生类型"
+        verbose_name_plural = "考生类型"
 
     type_name = models.CharField(verbose_name='类型', max_length=50, unique=True)
     def __str__(self):
@@ -210,8 +210,8 @@ class Subject(models.Model):
     ]
 
     class Meta:
-        verbose_name = "学科专业"
-        verbose_name_plural = "学科专业"
+        verbose_name = "学科门类"
+        verbose_name_plural = "学科门类"
 
     type_name = models.CharField(
         verbose_name='专业类型',
@@ -219,6 +219,13 @@ class Subject(models.Model):
         choices=SUBJECT_TYPE_CHOICES,
     )
     name = models.CharField(verbose_name='专业', max_length=255)
+    subject_type = models.ForeignKey(
+        SubjectType,
+        related_name='subjects',
+        on_delete=models.CASCADE,
+        verbose_name='考生类型',
+        null=True,
+    )
 
     def __str__(self):
         return self.name
@@ -226,8 +233,8 @@ class Subject(models.Model):
 class ScoreLine(models.Model):
 
     class Meta:
-        verbose_name = "分数线"
-        verbose_name_plural = "分数线"
+        verbose_name = "历年分数线"
+        verbose_name_plural = "历年分数线"
         unique_together = [['subject_type', 'admission_batch', 'admission_year']]
 
     score = models.IntegerField(verbose_name='分数')
@@ -256,15 +263,17 @@ class ScoreLine(models.Model):
 class UnivercityCode(models.Model):
 
     class Meta:
-        verbose_name = "院校代号"
-        verbose_name_plural = "院校代号"
+        verbose_name = "院校代码"
+        verbose_name_plural = "院校代码"
 
-    code = models.CharField(verbose_name='代号', max_length=50, unique=True)
+    code = models.CharField(verbose_name='代码', max_length=50, unique=True)
+    univercity_name_alias = models.CharField(verbose_name='学校名称(含招生条件备注)', max_length=255)
     univercity = models.ForeignKey(
         Univercity,
         related_name='univercity_codes',
         on_delete=models.CASCADE,
-        verbose_name='高校'
+        verbose_name='高校',
+        null=True,
     )
 
     def __str__(self):
@@ -273,20 +282,20 @@ class UnivercityCode(models.Model):
 class Plan(models.Model):
 
     class Meta:
-        verbose_name = "招生计划"
-        verbose_name_plural = "招生计划"
+        verbose_name = "历年招生数据"
+        verbose_name_plural = "历年招生数据"
 
     univercity_code = models.ForeignKey(
         UnivercityCode,
         related_name='plans',
         on_delete=models.CASCADE,
-        verbose_name='院校代号'
+        verbose_name='院校代码'
     )
     subject_type = models.ForeignKey(
         SubjectType,
         related_name='plans',
         on_delete=models.CASCADE,
-        verbose_name='学科类型',
+        verbose_name='考生类型',
     )
     admission_batch = models.ForeignKey(
         AdmissionBatch,
@@ -305,6 +314,8 @@ class Plan(models.Model):
     highest_score = models.FloatField(verbose_name='最高分', default=0.0)
     lowest_score = models.FloatField(verbose_name='最低分', default=0.0)
     average_score = models.FloatField(verbose_name='平均分', default=0.0)
+    highest_rank = models.IntegerField(verbose_name='最高位次', default=0)
+    lowest_rank = models.IntegerField(verbose_name='最低位次', default=0)
 
     def __str__(self):
         return str(self.plan_amount)
