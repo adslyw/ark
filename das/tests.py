@@ -283,4 +283,6 @@ if __name__ == '__main__':
     #     print(school.name)
     # fetch_school_rank()
     # fetch_school_code()
-    fetch_school_plan()
+    # fetch_school_plan()
+    for uc in UnivercityCode.objects.filter(univercity__isnull=True):
+        print(uc.code, uc.univercity_name_alias)
