@@ -95,6 +95,9 @@ class PlanAdmin(admin.ModelAdmin):
     search_fields = [
         'univercity_code__univercity_name_alias',
         'univercity_code__code',
+    ]
+
+    list_filter = [
         'admission_year__year',
         'admission_batch__batch_name',
         'subject_type__type_name',
