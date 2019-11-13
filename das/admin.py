@@ -134,8 +134,8 @@ class PlanAdmin(admin.ModelAdmin):
     get_admission_year_name.admin_order_field = 'admission_year'
     get_subject_type_name.admin_order_field = 'subject_type'
     get_admission_batch_name.admin_order_field = 'admission_batch'
-    get_code.admin_order_field = 'univercity_code'
-    get_univercity_name_alias.admin_order_field = 'univercity_code'
+    get_code.admin_order_field = 'univercity_code__code'
+    get_univercity_name_alias.admin_order_field = 'univercity_code__univercity_name_alias'
 
 
 admin.site.register(Rank)
