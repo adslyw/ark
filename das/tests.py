@@ -10,7 +10,7 @@ from das.models import *
 
 import requests
 from bs4 import BeautifulSoup
-
+from django.db.models import Count
 # def fetch_provinces():
 #     page = requests.get('http://college.gaokao.com/schpoint/')
 #     soup = BeautifulSoup(page.content, 'html.parser')
@@ -116,13 +116,16 @@ def fetch_schools():
 
 
 def fetch_school_city():
-    url = 'http://m.gaosan.com/gaokao/150460.html'
+    url = 'http://www.gaosan.com/gaokao/248720.html'
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
-    for line in soup.select('#data150460 > table > tbody > tr'):
-        school_name = line.select('td:nth-child(1)')[0].text
-        city_name = line.select('td:nth-child(4)')[0].text.replace('市', '')
-        comment = line.select('td:nth-child(6)')[0].text
+    for line in soup.select('#data248720 > table > tbody > tr'):
+        if '（' in line.select('td:nth-child(1)')[0].text:
+            continue
+        school_name = line.select('td:nth-child(2)')[0].text
+        city_name = line.select('td:nth-child(5)')[0].text.replace('市', '')
+        comment = line.select('td:nth-child(7)')[0].text
+        # print(school_name, city_name, comment)
         try:
             u = Univercity.objects.get(
                 name=school_name,
@@ -166,7 +169,7 @@ def fetch_school_rank():
                 u.total_rank = int(rank)
                 u.save()
 
-def fetch_school_code():
+def fetch_univercity_city_and_is_private():
     params  = [
         ['http://www.gaosan.com/gaokao/222526.html', '#data222526 > table > tbody > tr'],
         ['http://www.gaosan.com/gaokao/223294.html', '#data223294 > table > tbody > tr'],
@@ -176,8 +179,8 @@ def fetch_school_code():
         page = requests.get(url)
         soup = BeautifulSoup(page.content, 'html.parser')
         for line in soup.select(selector):
-            school_code = line.select('td:nth-child(3)')[0].text
             school_name = line.select('td:nth-child(4)')[0].text
+            city = line.select('td:nth-child(3)')[5].text.replace('市', '')
             try:
                 u = Univercity.objects.get(
                     name=school_name,
@@ -192,21 +195,29 @@ def fetch_school_code():
 
 def fetch_school_plan():
     params  = [
-        [2017, '本科一批', 'http://www.sneac.com/2017YBZS--LG.html', 'table > tbody > tr'],
-        [2017, '本科一批', 'http://www.sneac.com/2017YBZS--WS.html', 'table > tbody > tr'],
-        [2017, '本科二批', 'http://www.sneac.com/EBZS-LG.html', 'table > tbody > tr'],
-        [2017, '本科二批', 'http://www.sneac.com/EBZS-WS.html', 'table > tbody > tr'],
-        [2018, '本科一批', 'http://www.sneac.com/2018YBZS-LG.html', 'table > tbody > tr'],
-        [2018, '本科一批', 'http://www.sneac.com/2018YBZS-WS.html', 'table > tbody > tr'],
-        [2018, '本科二批', 'http://www.sneac.com/2018EBZS-LG.html', 'table > tbody > tr'],
-        [2018, '本科二批', 'http://www.sneac.com/2018EBZS-WS.html', 'table > tbody > tr'],
-        [2019, '本科一批', 'http://www.sneac.com/fujin/2019YB-ZS-LG.html', 'table > tr'],
-        [2019, '本科一批', 'http://www.sneac.com/fujin/2019YB-ZS-WS.html', 'table > tr'],
-        [2019, '本科二批', 'http://www.sneac.com/fujin/2019-EB-ZS-LG.html', 'table > tr'],
-        [2019, '本科二批', 'http://www.sneac.com/fujin/2019-EB-ZS-WS.html', 'table > tr'],
+        # [2017, '本科一批', 'http://www.sneac.com/2017YBZS--LG.html', 'table > tbody > tr'],
+        # [2017, '本科一批', 'http://www.sneac.com/2017YBZS--WS.html', 'table > tbody > tr'],
+        # [2017, '本科二批', 'http://www.sneac.com/EBZS-LG.html', 'table > tbody > tr'],
+        # [2017, '本科二批', 'http://www.sneac.com/EBZS-WS.html', 'table > tbody > tr'],
+        # [2018, '本科一批', 'http://www.sneac.com/2018YBZS-LG.html', 'table > tbody > tr'],
+        # [2018, '本科一批', 'http://www.sneac.com/2018YBZS-WS.html', 'table > tbody > tr'],
+        # [2018, '本科二批', 'http://www.sneac.com/2018EBZS-LG.html', 'table > tbody > tr'],
+        # [2018, '本科二批', 'http://www.sneac.com/2018EBZS-WS.html', 'table > tbody > tr'],
+        # [2019, '本科一批', 'http://www.sneac.com/fujin/2019YB-ZS-LG.html', 'table > tr'],
+        # [2019, '本科一批', 'http://www.sneac.com/fujin/2019YB-ZS-WS.html', 'table > tr'],
+        # [2019, '本科二批', 'http://www.sneac.com/fujin/2019-EB-ZS-LG.html', 'table > tr'],
+        # [2019, '本科二批', 'http://www.sneac.com/fujin/2019-EB-ZS-WS.html', 'table > tr'],
+        # [2017, '单设本科批次A段(国家专项计划)', 'http://www.sneac.com/2017DS-A-LG.html', 'table > tbody > tr'],
+        # [2017, '单设本科批次A段(国家专项计划)', 'http://www.sneac.com/2017DS-A-WS.html', 'table > tbody > tr'],
+        # [2017, '单设本科批次B段(地方专项计划)', 'http://www.sneac.com/info/1009/1549.htm', 'table > tbody > tr'],
+        # [2018, '单设本科批次A段(国家专项计划)', 'http://www.sneac.com/2018n3A-LG.html', 'table > tbody > tr'],
+        # [2018, '单设本科批次A段(国家专项计划)', 'http://www.sneac.com/2018n3A-WS.html', 'table > tbody > tr'],
+        ##[2018, '单设本科批次B段(地方专项计划)', 'http://www.sneac.com/info/1009/1473.htm', 'table > tbody > tr'],
+        # [2019, '单设本科批次A段(国家专项计划)', 'http://www.sneac.com/fujin/2019DSBK-A-WS.html', 'table > tr'],
+        # [2019, '单设本科批次A段(国家专项计划)', 'http://www.sneac.com/fujin/2019DSBK-A-LG.html', 'table > tr'],
+        # [2019, '单设本科批次B段(地方专项计划)', 'http://www.sneac.com/fujin/2019DSBK-B-WS.html', 'table > tr'],
+        # [2019, '单设本科批次B段(地方专项计划)', 'http://www.sneac.com/fujin/2019DSBK-B-LG.html', 'table > tr'],
     ]
-# body > center:nth-child(1) > table > tbody > tr:nth-child(2) > td:nth-child(2)
-# body > center:nth-child(1) > table > tbody > tr:nth-child(1)
 
     for year, batch, url, selector in params:
         page = requests.get(url)
@@ -267,10 +278,10 @@ def fetch_school_plan():
                 lowest_score,
                 lowest_rank,
             )
-            # UnivercityCode.objects.get_or_create(
-            #     code=school_code,
-            #     univercity=u,
-            # )
+            # # UnivercityCode.objects.get_or_create(
+            # #     code=school_code,
+            # #     univercity=u,
+            # # )
 
 if __name__ == '__main__':
     # fetch_provinces()
@@ -284,5 +295,44 @@ if __name__ == '__main__':
     # fetch_school_rank()
     # fetch_school_code()
     # fetch_school_plan()
-    for uc in UnivercityCode.objects.filter(univercity__isnull=True):
-        print(uc.code, uc.univercity_name_alias)
+    # for uc in UnivercityCode.objects.filter(code__startswith='9').exclude(univercity_name_alias__contains='中外合作办学'):
+    #     new_alias = uc.univercity_name_alias + '(中外合作办学)'
+    #     print(uc.code, uc.univercity_name_alias, new_alias)
+    #     uc.univercity_name_alias = new_alias
+    #     u, _ = Univercity.objects.get_or_create(
+    #         name=new_alias,
+    #     )
+    #     u.city = uc.univercity.city
+    #     u.total_rank = uc.univercity.total_rank
+    #     u.project_tags = uc.univercity.project_tags
+    #     u.is_private = uc.univercity.is_private
+    #     u.save()
+    #     uc.univercity = u
+    #     uc.save()
+
+    #     u, _ = Univercity.objects.get_or_create(
+    #         name=uc.univercity_name_alias
+    #     )
+    #     uc.univercity = u
+    #     uc.save()
+
+
+    # a = Plan.objects.exclude(
+    #     admission_batch__batch_name__in=['本科一批', '本科二批']
+    # ).filter(
+    #     admission_year__year='2019'
+    # ).values_list(
+    #     'univercity_code__univercity__name'
+    # ).distinct()
+
+    # b = Plan.objects.filter(
+    #     admission_batch__batch_name='本科二批'
+    # ).filter(
+    #     admission_year__year='2019'
+    # ).values_list(
+    #     'univercity_code__univercity__name'
+    # ).distinct()
+
+    # for x in (set(a) & set(b)):
+    #     uc = UnivercityCode.objects.get(univercity__name=x[0])
+    #     print(uc.code, uc.univercity.name)
