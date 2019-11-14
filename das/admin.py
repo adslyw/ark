@@ -2,8 +2,19 @@ from django.contrib import admin
 from das.models import *
 
 class UnivercityAdmin(admin.ModelAdmin):
-    list_display = ['name', 'get_city_name', 'tag_list']
-    search_fields = ['name', 'city__name']
+    list_display = [
+        'name',
+        'get_city_name',
+        'tag_list',
+    ]
+
+    search_fields = [
+        'name',
+    ]
+
+    autocomplete_fields = [
+        'city',
+    ]
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('project_tags', 'city')
@@ -19,17 +30,35 @@ class UnivercityAdmin(admin.ModelAdmin):
 
 
 class CityAdmin(admin.ModelAdmin):
-    # list_display = ['name']
+    list_display = ['name', 'get_province_name']
     search_fields = ['name']
+
+    list_filter = [
+        'province__name',
+    ]
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('province')
 
+    def get_province_name(self, obj):
+        return obj.province.name
 
 class UnivercityCodeAdmin(admin.ModelAdmin):
 
-    list_display = ['code', 'univercity_name_alias', 'get_univercity_name']
-    search_fields = ['code', 'univercity_name_alias']
+    list_display = [
+        'code',
+        'univercity_name_alias',
+        'get_univercity_name',
+    ]
+
+    search_fields = [
+        'code',
+        'univercity_name_alias',
+    ]
+
+    autocomplete_fields = [
+        'univercity',
+    ]
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('univercity')
@@ -92,6 +121,15 @@ class PlanAdmin(admin.ModelAdmin):
         'average_score',
     ]
 
+    # list_editable = [
+    #     'actual_amount',
+    #     'highest_score',
+    #     'highest_rank',
+    #     'lowest_score',
+    #     'lowest_rank',
+    #     'average_score',
+    # ]
+
     search_fields = [
         'univercity_code__univercity_name_alias',
         'univercity_code__code',
@@ -101,6 +139,10 @@ class PlanAdmin(admin.ModelAdmin):
         'admission_year__year',
         'admission_batch__batch_name',
         'subject_type__type_name',
+    ]
+
+    autocomplete_fields = [
+        'univercity_code',
     ]
 
     def get_queryset(self, request):
