@@ -1,18 +1,33 @@
-{% extends './bootstrap.html' %}
-
-{% load bootstrap4 %}
-
-{% block bootstrap4_content %}
-    <div class="container">
-        <h1>{% block title %}(no title){% endblock %}</h1>
-
-        <p>
-            <a href="{% url 'home' %}">home</a>
-        </p>
-
-        {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
-
-        {% block content %}(no content){% endblock %}
-    </div>
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	{% block title %}<title>{{title}}</title>{% endblock %}
+	{# Load the tag library #}
+	{% load bootstrap4 %}
+	{# Load CSS and JavaScript #}
+	{% bootstrap_css %}
+	{% bootstrap_javascript jquery='full' %}
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'das/style.css' %}">
+</head>
+<body class="d-flex flex-column h-100">
+	<header>		
+		{% include 'das/_navbar.html' %}
+	</header>
+	<div class="container-fluid">
+		<div class="row">
+			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+				{% include "das/_sidebar.html" %}
+			</nav>
+		</div>
+	</div>
+	<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+	  <div class="container">
+		{% block content %}<!-- default content text (typically empty) -->{% endblock %}
+	  </div>
+	</main>
+<!-- 	<div class="row">
+	{% include 'das/_footer.html' %}
+</div> -->
+</body>v
+</html>
