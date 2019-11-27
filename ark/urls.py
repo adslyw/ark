@@ -15,9 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from rest_framework import routers
+from square.views import (
+    UserViewSet,
+    GroupViewSet,
+)
+from rest_framework_swagger.views import get_swagger_view
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'groups', GroupViewSet)
+
+schema_view = get_swagger_view(title='API')
 
 urlpatterns = [
+    path(r'', schema_view),
+    path('', include(router.urls)),
     path('admin/', admin.site.urls),
-    path(r'das/', include('das.urls')),
+    path('auth/', include('rest_framework.urls')),
+    path('das/', include('das.urls')),
 ]
 

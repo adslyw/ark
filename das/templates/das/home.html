@@ -1,17 +1,20 @@
 {% extends './base.html' %}
-{% load crispy_forms_tags %}
-
+{# {% load crispy_forms_tags %} #}
+{% load rest_framework %}
 {% block content %}
 <form>
+  {# {% csrf_token %} #}
   <div class="form-group">
 <!--     <label for="score">高考分数</label>
 <input type="text" class="form-control" id="scoreInput" aria-describedby="scoreHelp" placeholder="请输入考试分数进行查询">
 <small id="scoreHelp" class="form-text text-muted">xxxxx.</small> -->
    	{# {{ form.as_p }}  #}
-   	{{ form.subject_type|as_crispy_field }}
+{#    	{{ form.subject_type|as_crispy_field }} #}
   </div>
   <div>
-  	{{ form.score|as_crispy_field }}
+{#   	{{ form.score|as_crispy_field }} #}
+{#     {{form|crispy}} #}
+    {% render_form serializer %}
   </div>
   <button type="submit" class="btn btn-primary">提交</button>
 </form>
