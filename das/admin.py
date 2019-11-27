@@ -180,6 +180,24 @@ class PlanAdmin(admin.ModelAdmin):
     get_univercity_name_alias.admin_order_field = 'univercity_code__univercity_name_alias'
 
 
+class ScoreStatisticAdmin(admin.ModelAdmin):
+    list_display = [
+        'get_admission_year_name',
+        'get_subject_type_name',
+        'score',
+        'number',
+        'cumulative_number',
+    ]
+
+    def get_admission_year_name(self, obj):
+        return obj.admission_year.year if obj.admission_year else ""
+
+    def get_subject_type_name(self, obj):
+        return obj.subject_type.type_name if obj.subject_type else ""
+
+    get_admission_year_name.short_description = '录取年份'
+    get_subject_type_name.short_description = '考生类型'
+
 admin.site.register(Rank)
 admin.site.register(Univercity, UnivercityAdmin)
 admin.site.register(Province)
@@ -196,3 +214,4 @@ admin.site.register(Subject)
 admin.site.register(ScoreLine, ScoreLineAdmin)
 admin.site.register(UnivercityCode, UnivercityCodeAdmin)
 admin.site.register(Plan, PlanAdmin)
+admin.site.register(ScoreStatistic, ScoreStatisticAdmin)

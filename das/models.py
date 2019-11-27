@@ -10,6 +10,7 @@ class Province(models.Model):
         verbose_name_plural = "省份"
 
     name = models.CharField(verbose_name='省份名称', max_length=50)
+    tags = TaggableManager(verbose_name='标签', blank=True)
 
     def __str__(self):
         return self.name
@@ -27,6 +28,7 @@ class City(models.Model):
         on_delete=models.CASCADE,
         verbose_name='省份',
     )
+    tags = TaggableManager(verbose_name='标签', blank=True)
 
     def __str__(self):
         return self.name
@@ -303,7 +305,32 @@ class Plan(models.Model):
     highest_rank = models.IntegerField(verbose_name='最高位次', default=0)
     lowest_score = models.IntegerField(verbose_name='最低分', default=0)
     lowest_rank = models.IntegerField(verbose_name='最低位次', default=0)
-    average_score = models.FloatField(verbose_name='平均分', default=0.0)
+    average_score = models.IntegerField(verbose_name='平均分', default=0)
 
     def __str__(self):
         return str(self.plan_amount)
+
+class ScoreStatistic(models.Model):
+
+    class Meta:
+        verbose_name = "考生成绩统计表"
+        verbose_name_plural = "考生成绩统计表"
+
+    score = models.IntegerField(verbose_name='分数')
+    number = models.IntegerField(verbose_name='人数')
+    cumulative_number = models.IntegerField(verbose_name='累计人数')
+    admission_year = models.ForeignKey(
+        AdmissionYear,
+        related_name='score_statistics',
+        on_delete=models.CASCADE,
+        verbose_name='高考年份',
+    )
+    subject_type = models.ForeignKey(
+        SubjectType,
+        related_name='score_statistics',
+        on_delete=models.CASCADE,
+        verbose_name='考生类型',
+    )
+
+    def __str__(self):
+        return self.score

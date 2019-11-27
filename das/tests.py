@@ -283,6 +283,43 @@ def fetch_school_plan():
             # #     univercity=u,
             # # )
 
+def fetch_score_count():
+    params = [
+        # [1, 2, 'http://www.sneac.com/fujin/2019lgltjbiao.htm', 'table > tr'],
+        # [1, 1, 'http://www.sneac.com/fujin/2019wsltjbiao.htm', 'table > tr'],
+        # [2, 2, 'http://www.sneac.com/fujin/2019wsltjbiao.htm', 'table > tr']
+        [2, 1, 'http://www.sneac.com/info/1009/1482.htm', 'table > tbody > tr']
+    ]
+
+    for admission_year, subject_type, url, selector in params:
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
+        for line in soup.select(selector):
+            score = line.select('td:nth-child(1)')[0].text
+            number = line.select('td:nth-child(2)')[0].text
+            cumulative_number = line.select('td:nth-child(3)')[0].text
+
+            if score == '分数' or score == '':
+                continue
+
+            if score.endswith('以上'):
+                score = score.replace('以上', '').replace('分', '')
+                number = cumulative_number
+
+            print(
+                score,
+                number,
+                cumulative_number,
+            )
+
+            ScoreStatistic.objects.create(
+                admission_year_id=admission_year,
+                subject_type_id=subject_type,
+                score=int(score),
+                number=int(number),
+                cumulative_number=int(cumulative_number),
+            )
+
 if __name__ == '__main__':
     # fetch_provinces()
     # fetch_exam_divisions()
@@ -336,3 +373,4 @@ if __name__ == '__main__':
     # for x in (set(a) & set(b)):
     #     uc = UnivercityCode.objects.get(univercity__name=x[0])
     #     print(uc.code, uc.univercity.name)
+    # fetch_score_count()
