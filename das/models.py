@@ -306,6 +306,7 @@ class Plan(models.Model):
     lowest_score = models.IntegerField(verbose_name='最低分', default=0)
     lowest_rank = models.IntegerField(verbose_name='最低位次', default=0)
     average_score = models.IntegerField(verbose_name='平均分', default=0)
+    average_rank = models.IntegerField(verbose_name='平均位次', default=0)
 
     def __str__(self):
         return str(self.plan_amount)

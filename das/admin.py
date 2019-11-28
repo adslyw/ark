@@ -119,6 +119,7 @@ class PlanAdmin(admin.ModelAdmin):
         'lowest_score',
         'lowest_rank',
         'average_score',
+        'average_rank',
     ]
 
     # list_editable = [
