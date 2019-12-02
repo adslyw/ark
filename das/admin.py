@@ -9,6 +9,8 @@ class UnivercityAdmin(admin.ModelAdmin):
     ]
 
     search_fields = [
+        'city__province__name',
+        'city__name',
         'name',
     ]
 
@@ -20,7 +22,7 @@ class UnivercityAdmin(admin.ModelAdmin):
         'project_tags',
         'is_private',
         'city__province__name',
-        'city__tags'
+        'city__tags',
     ]
 
     def get_queryset(self, request):
