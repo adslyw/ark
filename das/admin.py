@@ -71,6 +71,11 @@ class UnivercityCodeAdmin(admin.ModelAdmin):
         'univercity',
     ]
 
+    list_editable = [
+        'page1',
+        'page2',
+    ]
+
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('univercity')
 
