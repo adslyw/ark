@@ -16,6 +16,13 @@ class UnivercityAdmin(admin.ModelAdmin):
         'city',
     ]
 
+    list_filter = [
+        'project_tags',
+        'is_private',
+        'city__province__name',
+        'city__tags'
+    ]
+
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related('project_tags', 'city')
 

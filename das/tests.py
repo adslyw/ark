@@ -374,3 +374,9 @@ if __name__ == '__main__':
     #     uc = UnivercityCode.objects.get(univercity__name=x[0])
     #     print(uc.code, uc.univercity.name)
     # fetch_score_count()
+
+    print(Plan.objects.filter(
+        admission_year__year='2019'
+    ).values_list(
+        'average_score'
+    ))
