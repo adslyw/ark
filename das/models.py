@@ -258,6 +258,8 @@ class UnivercityCode(models.Model):
 
     code = models.CharField(verbose_name='代码', max_length=50, unique=True)
     univercity_name_alias = models.CharField(verbose_name='学校名称(含招生条件备注)', max_length=255)
+    page1 = models.CharField(verbose_name='挑大学选专业书页码', max_length=50, blank=True, default='')
+    page2 = models.CharField(verbose_name='汇编书页码', max_length=50, blank=True, default='')
     univercity = models.ForeignKey(
         Univercity,
         related_name='univercity_codes',
