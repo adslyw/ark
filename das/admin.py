@@ -58,6 +58,8 @@ class UnivercityCodeAdmin(admin.ModelAdmin):
         'code',
         'univercity_name_alias',
         'get_univercity_name',
+        'page1',
+        'page2',
     ]
 
     search_fields = [
