@@ -3,7 +3,7 @@ from das.models import *
 from das.forms import *
 
 class UnivercityAdmin(admin.ModelAdmin):
-    form = UnivercityForm
+    # form = UnivercityForm
 
     list_display = [
         'name',
@@ -42,7 +42,7 @@ class UnivercityAdmin(admin.ModelAdmin):
 
 
 class CityAdmin(admin.ModelAdmin):
-    form = CityForm
+    # form = CityForm
 
     list_display = ['name', 'get_province_name']
     search_fields = ['name']
@@ -202,8 +202,8 @@ class PlanAdmin(admin.ModelAdmin):
     get_univercity_name_alias.admin_order_field = 'univercity_code__univercity_name_alias'
 
 class ProvinceAdmin(admin.ModelAdmin):
-    form = ProvinceForm
-
+    # form = ProvinceForm
+    pass
 
 class ScoreStatisticAdmin(admin.ModelAdmin):
     list_display = [
