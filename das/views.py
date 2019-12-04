@@ -1,24 +1,4 @@
 # -*- coding: utf-8 -*-
-# from django.shortcuts import render
-# from django.contrib import messages
-# from django.views.generic import (
-# 	TemplateView,
-# 	FormView,
-# )
-# from das.forms import *
-
-# # Create your views here.
-# class HomePageView(FormView):
-#     template_name = "das/home.html"
-#     form_class = HomeForm
-#     success_url = '.'
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         messages.info(self.request, "hello")
-
-#         return context
-
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -32,3 +12,11 @@ class HomePageView(APIView):
         serializer = HomePageSerializer()
         return Response({'serializer': serializer})
 
+    def post(self, request):
+        serializer = HomePageSerializer()
+        result = {
+            'score': request.data.get('score'),
+            'personal_rank': request.data.get('personal_rank'),
+            'subject_type': request.data.get('subject_type'),
+        }
+        return Response({'serializer': serializer, 'result': result})

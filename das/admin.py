@@ -1,7 +1,10 @@
 from django.contrib import admin
 from das.models import *
+from das.forms import *
 
 class UnivercityAdmin(admin.ModelAdmin):
+    form = UnivercityForm
+
     list_display = [
         'name',
         'get_city_name',
@@ -39,6 +42,8 @@ class UnivercityAdmin(admin.ModelAdmin):
 
 
 class CityAdmin(admin.ModelAdmin):
+    form = CityForm
+
     list_display = ['name', 'get_province_name']
     search_fields = ['name']
 
@@ -196,6 +201,9 @@ class PlanAdmin(admin.ModelAdmin):
     get_code.admin_order_field = 'univercity_code__code'
     get_univercity_name_alias.admin_order_field = 'univercity_code__univercity_name_alias'
 
+class ProvinceAdmin(admin.ModelAdmin):
+    form = ProvinceForm
+
 
 class ScoreStatisticAdmin(admin.ModelAdmin):
     list_display = [
@@ -217,7 +225,7 @@ class ScoreStatisticAdmin(admin.ModelAdmin):
 
 admin.site.register(Rank)
 admin.site.register(Univercity, UnivercityAdmin)
-admin.site.register(Province)
+admin.site.register(Province, ProvinceAdmin)
 # admin.site.register(ExamDivision)
 admin.site.register(AdmissionBatch)
 admin.site.register(AdmissionYear)

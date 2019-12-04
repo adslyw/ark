@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from taggit.managers import TaggableManager
+from taggit.models import TaggedItemBase
 
-# Create your models here.
+
+class TaggedProvince(TaggedItemBase):
+    content_object = models.ForeignKey(
+        'Province',
+        on_delete=models.CASCADE,
+    )
+
 class Province(models.Model):
 
     class Meta:
@@ -10,7 +17,7 @@ class Province(models.Model):
         verbose_name_plural = "省份"
 
     name = models.CharField(verbose_name='省份名称', max_length=50)
-    tags = TaggableManager(verbose_name='标签', blank=True)
+    tags = TaggableManager(verbose_name='标签', blank=True, through=TaggedProvince)
 
     def __str__(self):
         return self.name

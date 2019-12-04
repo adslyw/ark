@@ -287,8 +287,8 @@ def fetch_score_count():
     params = [
         # [1, 2, 'http://www.sneac.com/fujin/2019lgltjbiao.htm', 'table > tr'],
         # [1, 1, 'http://www.sneac.com/fujin/2019wsltjbiao.htm', 'table > tr'],
-        # [2, 2, 'http://www.sneac.com/fujin/2019wsltjbiao.htm', 'table > tr']
-        [2, 1, 'http://www.sneac.com/info/1009/1482.htm', 'table > tbody > tr']
+        [2, 2, 'http://www.sneac.com/info/1088/5956.htm', 'table > tbody > tr']
+        # [2, 1, 'http://www.sneac.com/info/1009/1482.htm', 'table > tbody > tr']
     ]
 
     for admission_year, subject_type, url, selector in params:
@@ -375,8 +375,30 @@ if __name__ == '__main__':
     #     print(uc.code, uc.univercity.name)
     # fetch_score_count()
 
-    print(Plan.objects.filter(
-        admission_year__year='2019'
-    ).values_list(
-        'average_score'
-    ))
+    years = ['2018', '2017']
+    subject_type_names = ['理工', '文史']
+    params = zip(years, subject_type_names)
+    for year, subject_type_name in params:
+        score_rank_map = dict(ScoreStatistic.objects.filter(
+            admission_year__year=year,
+            subject_type__type_name=subject_type_name,
+        ).values_list(
+            'score',
+            'cumulative_number',
+        ))
+
+        plans = Plan.objects.filter(
+            admission_year__year=year,
+            subject_type__type_name=subject_type_name,
+        )
+
+        for plan in plans:
+            print(year, subject_type_name, plan.univercity_code.univercity.name, plan.average_score, score_rank_map.get(plan.average_score))
+
+            plan.average_rank = score_rank_map.get(plan.average_score)
+            plan.save()
+
+    # ScoreStatistic.objects.filter(
+    #     admission_year__year='2018',
+    #     subject_type__type_name='理工',
+    # ).delete()
