@@ -317,6 +317,33 @@ class Plan(models.Model):
     average_score = models.IntegerField(verbose_name='平均分', default=0)
     average_rank = models.IntegerField(verbose_name='平均位次', default=0)
 
+    @property
+    def score_line(self):
+        if self.admission_batch.batch_name == '本科二批':
+            batch_name = '本科二批'
+        else:
+            batch_name = '本科一批'
+
+        score_line = ScoreLine.objects.get(
+            admission_batch__batch_name=batch_name,
+            subject_type=self.subject_type,
+            admission_year=self.admission_year,
+        )
+
+        return score_line
+
+    @property
+    def highest_score_diff(self):
+        return self.highest_score - self.score_line.score
+
+    @property
+    def lowest_score_diff(self):
+        return self.lowest_score - self.score_line.score
+
+    @property
+    def average_score_diff(self):
+        return self.average_score - self.score_line.score
+
     def __str__(self):
         return str(self.plan_amount)
 
@@ -344,3 +371,56 @@ class ScoreStatistic(models.Model):
 
     def __str__(self):
         return self.score
+
+class PlanStatistic(models.Model):
+
+    class Meta:
+        verbose_name = "PlanStatistic"
+        verbose_name_plural = "PlanStatistics"
+
+    ls1 = models.IntegerField(default=0)
+    ls2 = models.IntegerField(default=0)
+    ls3 = models.IntegerField(default=0)
+    lr1 = models.IntegerField(default=0)
+    lr2 = models.IntegerField(default=0)
+    lr3 = models.IntegerField(default=0)
+    as1 = models.IntegerField(default=0)
+    as2 = models.IntegerField(default=0)
+    as3 = models.IntegerField(default=0)
+    ar1 = models.IntegerField(default=0)
+    ar2 = models.IntegerField(default=0)
+    ar3 = models.IntegerField(default=0)
+    hs1 = models.IntegerField(default=0)
+    hs2 = models.IntegerField(default=0)
+    hs3 = models.IntegerField(default=0)
+    hr1 = models.IntegerField(default=0)
+    hr2 = models.IntegerField(default=0)
+    hr3 = models.IntegerField(default=0)
+
+    d1 = models.IntegerField(default=0)
+    d2 = models.IntegerField(default=0)
+    d3 = models.IntegerField(default=0)
+    d4 = models.IntegerField(default=0)
+    d5 = models.IntegerField(default=0)
+    d6 = models.IntegerField(default=0)
+    d7 = models.IntegerField(default=0)
+
+    univercity_code = models.ForeignKey(
+        UnivercityCode,
+        on_delete=models.CASCADE,
+    )
+    admission_year = models.ForeignKey(
+        AdmissionYear,
+        on_delete=models.CASCADE,
+    )
+    subject_type = models.ForeignKey(
+        SubjectType,
+        on_delete=models.CASCADE,
+    )
+    admission_batch = models.ForeignKey(
+        AdmissionBatch,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return ''

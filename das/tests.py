@@ -7,10 +7,11 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ark.settings")
 django.setup()
 
 from das.models import *
-
+from django.db.models import Q
 import requests
 from bs4 import BeautifulSoup
 from django.db.models import Count
+from das.utils.tools import *
 # def fetch_provinces():
 #     page = requests.get('http://college.gaokao.com/schpoint/')
 #     soup = BeautifulSoup(page.content, 'html.parser')
@@ -320,6 +321,123 @@ def fetch_score_count():
                 cumulative_number=int(cumulative_number),
             )
 
+def test_fetch_score_difference_value():
+    score = 567
+    batch_name = '本科一批'
+    subject_type = 1
+    year = '2019'
+
+    score_difference_value = fetch_score_difference_value(
+        score,
+        batch_name,
+        subject_type,
+        year
+    )
+
+    print('score_difference_value: ', score_difference_value)
+
+
+def compute_plan_sctatics(year):
+    # admission_year = AdmissionYear.objects.get(year=year)
+    # for admission_batch in AdmissionBatch.objects.all():
+    #     for plan in plans.objects.:
+    #         pass
+
+    target_years = [
+        year,
+        str(int(year) -1),
+        str(int(year) -2),
+    ]
+    print(target_years)
+    plans = Plan.objects.filter(
+        admission_year__year=year
+    )
+
+    for plan in plans:
+        target_plans = Plan.objects.filter(
+            admission_year__year__in=target_years,
+            subject_type=plan.subject_type,
+            admission_batch=plan.admission_batch,
+            univercity_code=plan.univercity_code,
+        )
+
+        if target_plans.count() < 2:
+            continue
+
+        plan_statistic, _ = PlanStatistic.objects.get_or_create(
+            univercity_code=plan.univercity_code,
+            admission_year=plan.admission_year,
+            subject_type=plan.subject_type,
+            admission_batch=plan.admission_batch,
+        )
+
+        if not _:
+            print(plan_statistic.id)
+            continue
+
+        lowest_score_diffs = list(sorted([
+            x.lowest_score_diff
+            for x in target_plans.exclude(lowest_score=0)
+        ]))
+
+        if len(lowest_score_diffs) == 3:
+            [l1, l2, l3] = lowest_score_diffs
+        elif len(lowest_score_diffs) == 2:
+            [l1, l2] = lowest_score_diffs
+            l3 = l2
+        else:
+            [l1] = lowest_score_diffs
+            l2 = l1
+            l3 = l1
+
+        highest_score_diffs = list(sorted([
+            x.highest_score_diff
+            for x in target_plans.exclude(highest_score=0)
+        ]))
+
+        if len(highest_score_diffs) == 3:
+            [h1, h2, h3] = highest_score_diffs
+        elif len(highest_score_diffs) == 2:
+            [h1, h2] = highest_score_diffs
+            h3 = h2
+        else:
+            [h1] = highest_score_diffs
+            h2 = h1
+            h3 = h1
+
+        average_score_diffs = list(sorted([
+            x.average_score_diff
+            for x in target_plans.exclude(average_score=0)
+        ]))
+
+        if len(average_score_diffs) == 3:
+            [a1, a2, a3] = average_score_diffs
+        elif len(average_score_diffs) == 2:
+            [a1, a2] = average_score_diffs
+            a3 = a2
+        else:
+            [a1] = average_score_diffs
+            a2 = a1
+            a3 = a1
+
+        d1 = l2
+        d2 = int((l3 + a1)/2)
+        d3 = a1
+        d4 = int((a3 + h1)/2)
+        d5 = h1
+        d6 = h3
+        d7 = h3 + 10
+
+        print(plan.univercity_code, [l1, l2, l3, h1, h2, h3, a1, a2, a3, d1, d2, d3, d4, d5, d6, d7])
+
+        plan_statistic.d1 = d1
+        plan_statistic.d2 = d2
+        plan_statistic.d3 = d3
+        plan_statistic.d4 = d4
+        plan_statistic.d5 = d5
+        plan_statistic.d6 = d6
+        plan_statistic.d7 = d7
+        plan_statistic.save()
 if __name__ == '__main__':
     # fetch_provinces()
     # fetch_exam_divisions()
@@ -375,30 +493,135 @@ if __name__ == '__main__':
     #     print(uc.code, uc.univercity.name)
     # fetch_score_count()
 
-    years = ['2018', '2017']
-    subject_type_names = ['理工', '文史']
-    params = zip(years, subject_type_names)
-    for year, subject_type_name in params:
-        score_rank_map = dict(ScoreStatistic.objects.filter(
-            admission_year__year=year,
-            subject_type__type_name=subject_type_name,
-        ).values_list(
-            'score',
-            'cumulative_number',
-        ))
 
-        plans = Plan.objects.filter(
-            admission_year__year=year,
-            subject_type__type_name=subject_type_name,
-        )
+    # years = ['2018', '2018']
+    # subject_type_names = ['理工', '文史']
+    # params = zip(years, subject_type_names)
+    # for year, subject_type_name in params:
+    #     score_rank_map = dict(ScoreStatistic.objects.filter(
+    #         admission_year__year=year,
+    #         subject_type__type_name=subject_type_name,
+    #     ).values_list(
+    #         'score',
+    #         'cumulative_number',
+    #     ))
 
-        for plan in plans:
-            print(year, subject_type_name, plan.univercity_code.univercity.name, plan.average_score, score_rank_map.get(plan.average_score))
+    #     plans = Plan.objects.filter(
+    #         admission_year__year=year,
+    #         subject_type__type_name=subject_type_name,
+    #     )
 
-            plan.average_rank = score_rank_map.get(plan.average_score)
-            plan.save()
+    #     for plan in plans:
+    #         print(
+    #             year,
+    #             subject_type_name,
+    #             plan.admission_batch.batch_name,
+    #             plan.univercity_code.univercity.name,
+    #             plan.highest_rank,
+    #             score_rank_map.get(plan.highest_score),
+    #             plan.lowest_rank,
+    #             score_rank_map.get(plan.lowest_score),
+    #             plan.average_score,
+    #             score_rank_map.get(plan.average_score)
+    #         )
 
-    # ScoreStatistic.objects.filter(
-    #     admission_year__year='2018',
-    #     subject_type__type_name='理工',
-    # ).delete()
+    #         plan.highest_rank = score_rank_map.get(plan.highest_score)
+    #         plan.lowest_rank = score_rank_map.get(plan.lowest_score)
+    #         plan.average_rank = score_rank_map.get(plan.average_score)
+    #         plan.save()
+
+    # # 提前批
+    # batch_names = list(AdmissionBatch.objects.values_list(
+    #     'batch_name',
+    #     flat=True,
+    # ))
+
+    # type_names = list(SubjectType.objects.values_list(
+    #     'type_name',
+    #     flat=True,
+    # ))
+
+    # year = '2017'
+    # for batch_name in batch_names:
+    #     # if batch_name  not in ['提前批']:
+    #     #     continue
+    #     for subject_type_name in type_names:
+    #         plans = Plan.objects.filter(
+    #             # admission_batch__batch_name=batch_name,
+    #             subject_type__type_name=subject_type_name,
+    #             admission_year__year='2017',
+    #         )
+
+    #         low_score_map = dict(plans.values_list(
+    #             'lowest_score',
+    #             'lowest_rank'
+    #         ).distinct())
+
+    #         high_score_map = dict(plans.values_list(
+    #             'highest_score',
+    #             'highest_rank'
+    #         ).distinct())
+
+    #         # average_score_map = dict(Plan.objects.filter(
+    #         #     admission_batch__batch_name='本科一批',
+    #         #     subject_type__type_name='理工',
+    #         #     admission_year__year='2017'
+    #         # ).values_list(
+    #         #     'average_score',
+    #         #     'average_rank'
+    #         # ).distinct())
+
+    #         score_map = {
+    #             **high_score_map,
+    #             **low_score_map,
+    #             # **average_score_map,
+    #         }
+
+    #         # score_map = dict([
+
+    #         #    for x in  sorted(score_map.items())
+    #         # ])
+    #         result = []
+    #         pre = None
+    #         for x in sorted(score_map.items()):
+    #             current = x
+    #             if pre:
+    #                 if pre[0] + 1 == current[0]:
+    #                     continue
+
+    #                 result.append([pre[0], pre[1]])
+    #                 dx = current[0] - pre[0]
+    #                 dy = int((pre[1] - current[1]) / dx)
+    #                 for i in range(1, dx):
+    #                     result.append([pre[0] + i, pre[1] - i*dy])
+    #             pre = x
+
+    #         score_map = dict(result)
+    #         # plans1 = Plan.objects.filter(
+    #         #     admission_batch__batch_name=batch_name,
+    #         #     subject_type__type_name=subject_type_name,
+    #         #     admission_year__year='2017',
+    #         # )
+
+    #         for plan in plans.filter(admission_batch__batch_name=batch_name).filter(Q(highest_rank=0) | Q(lowest_rank=0) | Q(average_rank=0)):
+    #             print(
+    #                 year,
+    #                 subject_type_name,
+    #                 plan.admission_batch.batch_name,
+    #                 plan.univercity_code.univercity.name,
+    #                 plan.highest_score,
+    #                 score_map.get(plan.highest_score),
+    #                 plan.lowest_score,
+    #                 score_map.get(plan.lowest_score),
+    #                 plan.average_score,
+    #                 score_map.get(plan.average_score),
+    #             )
+
+    #             plan.highest_rank = score_map.get(plan.highest_score)
+    #             plan.lowest_rank = score_map.get(plan.lowest_score)
+    #             plan.average_rank = score_map.get(plan.average_score)
+    #             plan.save()
+
+
+    # test_fetch_score_difference_value()
+    compute_plan_sctatics('2019')

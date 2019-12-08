@@ -223,6 +223,61 @@ class ScoreStatisticAdmin(admin.ModelAdmin):
     get_admission_year_name.short_description = '录取年份'
     get_subject_type_name.short_description = '考生类型'
 
+
+class PlanStatisticAdmin(admin.ModelAdmin):
+    list_display = [
+        'get_admission_year_name',
+        'get_subject_type_name',
+        'get_admission_batch_name',
+        'get_code',
+        'get_univercity_name',
+        'd1',
+        'd2',
+        'd3',
+        'd4',
+        'd5',
+        'd6',
+        'd7',
+    ]
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related(
+            'univercity_code',
+            'subject_type',
+            'admission_batch',
+            'admission_year',
+        )
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).prefetch_related('subject_type', 'admission_batch', 'admission_year')
+
+
+    def get_code(self, obj):
+        return obj.univercity_code.code if obj.univercity_code else ""
+
+    def get_univercity_name(self, obj):
+        return obj.univercity_code.univercity.name if obj.univercity_code else ""
+
+    def get_admission_year_name(self, obj):
+        return obj.admission_year.year if obj.admission_year else ""
+
+    def get_admission_batch_name(self, obj):
+        return obj.admission_batch.batch_name if obj.admission_batch else ""
+
+    def get_subject_type_name(self, obj):
+        return obj.subject_type.type_name if obj.subject_type else ""
+
+    get_admission_year_name.short_description = '录取年份'
+    get_subject_type_name.short_description = '考生类型'
+    get_admission_batch_name.short_description = '录取批次'
+    get_code.short_description = '院校代码'
+    get_univercity_name.short_description = '高校名称'
+    get_admission_year_name.admin_order_field = 'admission_year'
+    get_subject_type_name.admin_order_field = 'subject_type'
+    get_admission_batch_name.admin_order_field = 'admission_batch'
+    get_code.admin_order_field = 'univercity_code__code'
+    get_univercity_name.admin_order_field = 'univercity_code__univercity__name'
+
+
 admin.site.register(Rank)
 admin.site.register(Univercity, UnivercityAdmin)
 admin.site.register(Province, ProvinceAdmin)
@@ -240,3 +295,4 @@ admin.site.register(ScoreLine, ScoreLineAdmin)
 admin.site.register(UnivercityCode, UnivercityCodeAdmin)
 admin.site.register(Plan, PlanAdmin)
 admin.site.register(ScoreStatistic, ScoreStatisticAdmin)
+admin.site.register(PlanStatistic, PlanStatisticAdmin)

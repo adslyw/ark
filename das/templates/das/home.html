@@ -11,8 +11,17 @@
 </form>
 
 <div>
-    {% for k, v in result.items %}
-        {{k}}:{{v}}
+    {% for k, v in result.recommends.items %}
+        <div class="card">
+          <div class="card-header">
+            {{k}}
+          </div>
+          <ul class="list-group list-group-flush">
+            {% for u in v %}
+                <li class="list-group-item">{{u}}</li>
+            {% endfor%}
+          </ul>
+        </div>
     {% endfor %}
 </div>
 {% endblock %}
