@@ -361,8 +361,8 @@ def compute_plan_sctatics(year):
             univercity_code=plan.univercity_code,
         )
 
-        if target_plans.count() < 2:
-            continue
+        # if target_plans.count() < 2:
+        #     continue
 
         plan_statistic, _ = PlanStatistic.objects.get_or_create(
             univercity_code=plan.univercity_code,
@@ -371,64 +371,92 @@ def compute_plan_sctatics(year):
             admission_batch=plan.admission_batch,
         )
 
-        if not _:
-            print(plan_statistic.id)
-            continue
+        # if not _:
+        #     print(plan_statistic.id, _)
+        #     continue
 
         lowest_score_diffs = list(sorted([
             x.lowest_score_diff
             for x in target_plans.exclude(lowest_score=0)
         ]))
 
-        if len(lowest_score_diffs) == 3:
-            [l1, l2, l3] = lowest_score_diffs
-        elif len(lowest_score_diffs) == 2:
-            [l1, l2] = lowest_score_diffs
-            l3 = l2
-        else:
-            [l1] = lowest_score_diffs
-            l2 = l1
-            l3 = l1
+        lowest_rank_diffs = list(sorted([
+            x.lowest_rank
+            for x in target_plans.exclude(lowest_rank=0)
+        ]))
+
+        # if len(lowest_score_diffs) == 3:
+        #     [l1, l2, l3] = lowest_score_diffs
+        # elif len(lowest_score_diffs) == 2:
+        #     [l1, l2] = lowest_score_diffs
+        #     l3 = l2
+        # else:
+        #     [l1] = lowest_score_diffs
+        #     l2 = l1
+        #     l3 = l1
 
         highest_score_diffs = list(sorted([
             x.highest_score_diff
             for x in target_plans.exclude(highest_score=0)
         ]))
 
-        if len(highest_score_diffs) == 3:
-            [h1, h2, h3] = highest_score_diffs
-        elif len(highest_score_diffs) == 2:
-            [h1, h2] = highest_score_diffs
-            h3 = h2
-        else:
-            [h1] = highest_score_diffs
-            h2 = h1
-            h3 = h1
+        highest_rank_diffs = list(sorted([
+            x.highest_rank
+            for x in target_plans.exclude(highest_rank=0)
+        ]))
+
+        # if len(highest_score_diffs) == 3:
+        #     [h1, h2, h3] = highest_score_diffs
+        # elif len(highest_score_diffs) == 2:
+        #     [h1, h2] = highest_score_diffs
+        #     h3 = h2
+        # else:
+        #     [h1] = highest_score_diffs
+        #     h2 = h1
+        #     h3 = h1
 
         average_score_diffs = list(sorted([
             x.average_score_diff
             for x in target_plans.exclude(average_score=0)
         ]))
 
-        if len(average_score_diffs) == 3:
-            [a1, a2, a3] = average_score_diffs
-        elif len(average_score_diffs) == 2:
-            [a1, a2] = average_score_diffs
-            a3 = a2
-        else:
-            [a1] = average_score_diffs
-            a2 = a1
-            a3 = a1
+        average_rank_diffs = list(sorted([
+            x.average_rank
+            for x in target_plans.exclude(average_rank=0)
+        ]))
 
-        d1 = l2
-        d2 = int((l3 + a1)/2)
-        d3 = a1
-        d4 = int((a3 + h1)/2)
-        d5 = h1
-        d6 = h3
-        d7 = h3 + 10
+        # if len(average_score_diffs) == 3:
+        #     [a1, a2, a3] = average_score_diffs
+        # elif len(average_score_diffs) == 2:
+        #     [a1, a2] = average_score_diffs
+        #     a3 = a2
+        # else:
+        #     [a1] = average_score_diffs
+        #     a2 = a1
+        #     a3 = a1
+        d_list = list(sorted(average_score_diffs + highest_score_diffs + lowest_score_diffs))
+        r_list = list(sorted(average_rank_diffs + highest_rank_diffs + lowest_rank_diffs))
+        if len(d_list) < 6 or len(r_list) < 6:
+            print('---', plan.univercity_code)
+            continue
 
-        print(plan.univercity_code, [l1, l2, l3, h1, h2, h3, a1, a2, a3, d1, d2, d3, d4, d5, d6, d7])
+        # print(d_list)
+
+        d1 = d_list[-6]
+        d2 = d_list[-5]
+        d3 = d_list[-4]
+        d4 = d_list[-3]
+        d5 = d_list[-2]
+        d6 = d_list[-1]
+        d7 = d_list[-1] + 10
+        r7 = r_list[5]
+        r6 = r_list[4]
+        r5 = r_list[3]
+        r4 = r_list[2]
+        r3 = r_list[1]
+        r2 = r_list[0]
+        r1 = int(r_list[0] * 0.9)
+        print(plan.univercity_code, [d1, d2, d3, d4, d5, d6, d7, r1, r2, r3, r4, r5, r6, r7])
 
         plan_statistic.d1 = d1
         plan_statistic.d2 = d2
@@ -437,7 +465,15 @@ def compute_plan_sctatics(year):
         plan_statistic.d5 = d5
         plan_statistic.d6 = d6
         plan_statistic.d7 = d7
+        plan_statistic.r1 = r1
+        plan_statistic.r2 = r2
+        plan_statistic.r3 = r3
+        plan_statistic.r4 = r4
+        plan_statistic.r5 = r5
+        plan_statistic.r6 = r6
+        plan_statistic.r7 = r7
         plan_statistic.save()
+
 if __name__ == '__main__':
     # fetch_provinces()
     # fetch_exam_divisions()
@@ -625,3 +661,4 @@ if __name__ == '__main__':
 
     # test_fetch_score_difference_value()
     compute_plan_sctatics('2019')
+

@@ -238,6 +238,13 @@ class PlanStatisticAdmin(admin.ModelAdmin):
         'd5',
         'd6',
         'd7',
+        'r1',
+        'r2',
+        'r3',
+        'r4',
+        'r5',
+        'r6',
+        'r7',
     ]
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related(

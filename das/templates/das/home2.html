@@ -2,7 +2,7 @@
 
 {% load rest_framework %}
 {% block content %}
-<form action="{% url 'home' %}" method="POST">
+<form action="{% url 'home2' %}" method="POST">
   {% csrf_token %}
   <div>
     {% render_form serializer %}

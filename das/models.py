@@ -404,6 +404,13 @@ class PlanStatistic(models.Model):
     d5 = models.IntegerField(default=0)
     d6 = models.IntegerField(default=0)
     d7 = models.IntegerField(default=0)
+    r1 = models.IntegerField(default=0)
+    r2 = models.IntegerField(default=0)
+    r3 = models.IntegerField(default=0)
+    r4 = models.IntegerField(default=0)
+    r5 = models.IntegerField(default=0)
+    r6 = models.IntegerField(default=0)
+    r7 = models.IntegerField(default=0)
 
     univercity_code = models.ForeignKey(
         UnivercityCode,
