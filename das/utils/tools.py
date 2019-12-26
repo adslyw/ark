@@ -172,7 +172,7 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
 
     t4 = list(ps.filter(
         r4__gt=rank,
-        r5__lte=rank,
+        r3__lte=rank,
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
