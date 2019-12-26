@@ -21,18 +21,19 @@ from square.views import (
     GroupViewSet,
 )
 from rest_framework_swagger.views import get_swagger_view
+from das.views import HomePageView
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
-router.register(r'groups', GroupViewSet)
 
 schema_view = get_swagger_view(title='API')
 
 urlpatterns = [
-    path(r'', schema_view),
-    path('', include(router.urls)),
+    path('', HomePageView.as_view(), name='home'),
+    path('swagger/', schema_view),
     path('admin/', admin.site.urls),
     path('auth/', include('rest_framework.urls')),
     path('das/', include('das.urls')),
+    path('', include(router.urls)),
 ]
 
