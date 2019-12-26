@@ -141,8 +141,8 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     )
 
     t6 = list(ps.filter(
-        r2__gte=rank,
-        r1__lt=rank,
+        r2__gt=rank,
+        r1__lte=rank,
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
@@ -156,8 +156,8 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ))
 
     t5 = list(ps.filter(
-        r3__gte=rank,
-        r2__lt=rank,
+        r3__gt=rank,
+        r2__lte=rank,
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
@@ -171,8 +171,8 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ))
 
     t4 = list(ps.filter(
-        d4__gte=rank,
-        d5__lt=rank,
+        r4__gt=rank,
+        r5__lte=rank,
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
@@ -186,8 +186,8 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ))
 
     t3 = list(ps.filter(
-        d5__gte=rank,
-        d4__lt=rank,
+        r5__gt=rank,
+        r4__lte=rank,
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
@@ -201,8 +201,8 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ))
 
     t2 = list(ps.filter(
-        d6__gte=rank,
-        d5__lt=rank,
+        r6__gt=rank,
+        r5__lte=rank,
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
@@ -216,8 +216,8 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ))
 
     t1 = list(ps.filter(
-        d7__gte=rank,
-        d6__lt=rank,
+        r7__gte=rank,
+        r6__lte=rank,
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
