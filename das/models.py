@@ -344,6 +344,10 @@ class Plan(models.Model):
     def average_score_diff(self):
         return self.average_score - self.score_line.score
 
+    # @property
+    # def rank_diff(self, rank):
+
+
     def __str__(self):
         return str(self.plan_amount)
 

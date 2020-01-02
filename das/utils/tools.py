@@ -18,6 +18,42 @@ def fetch_score_difference_value(score, batch_name, subject_type_name, year):
     return difference_value
 
 
+def fetch_rank_difference_value(rank, batch_name, subject_type_name, year):
+    difference_value = None
+
+    diff_map = {
+        '2017_理工_本科二批': 52052,
+        '2017_文史_本科二批': 9722,
+        '2018_理工_本科二批': 53596,
+        '2018_文史_本科二批': 10971,
+        '2019_理工_本科二批': 63559,
+        '2019_文史_本科二批': 14592,
+        '2017_理工_本科一批': 0,
+        '2017_文史_本科一批': 0,
+        '2018_理工_本科一批': 0,
+        '2018_文史_本科一批': 0,
+        '2019_理工_本科一批': 0,
+        '2019_文史_本科一批': 0,
+    }
+
+    if batch_name != '本科二批':
+        batch_name = '本科一批'
+
+    score_line = ScoreLine.objects.get(
+        admission_batch__batch_name=batch_name,
+        subject_type__type_name=subject_type_name,
+        admission_year__year=year,
+    )
+
+    key = "{}_{}_{}".format(
+        year,
+        subject_type_name,
+        batch_name,
+    )
+    difference_value = rank - diff_map.get(key)
+
+    return difference_value
+
 def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_name, year):
     result = {}
 
@@ -43,7 +79,7 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
         'd5',
         'd6',
         'd7',
-    ))
+    ).order_by('-d1'))
     result['t1'] = t1
 
     t2 = list(ps.filter(
@@ -59,7 +95,7 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
         'd5',
         'd6',
         'd7',
-    ))
+    ).order_by('-d2'))
     result['t2'] = t2
 
     t3 = list(ps.filter(
@@ -75,7 +111,7 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
         'd5',
         'd6',
         'd7',
-    ))
+    ).order_by('-d3'))
     result['t3'] = t3
 
     t4 = list(ps.filter(
@@ -91,7 +127,7 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
         'd5',
         'd6',
         'd7',
-    ))
+    ).order_by('-d4'))
     result['t4'] = t4
 
     t5 = list(ps.filter(
@@ -107,7 +143,7 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
         'd5',
         'd6',
         'd7',
-    ))
+    ).order_by('-d5'))
     result['t5'] = t5
 
     t6 = list(ps.filter(
@@ -123,7 +159,7 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
         'd5',
         'd6',
         'd7',
-    ))
+    ).order_by('-d6'))
     result['t6'] = t6
 
     return result

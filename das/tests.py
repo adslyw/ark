@@ -350,7 +350,8 @@ def compute_plan_sctatics(year):
     ]
     print(target_years)
     plans = Plan.objects.filter(
-        admission_year__year=year
+        admission_year__year=year,
+        admission_batch__batch_name='本科二批',
     )
 
     for plan in plans:
@@ -361,7 +362,8 @@ def compute_plan_sctatics(year):
             univercity_code=plan.univercity_code,
         )
 
-        # if target_plans.count() < 2:
+        # if plan.admission_batch.batch_name != '本科二批':
+        #     print(plan.id)
         #     continue
 
         plan_statistic, _ = PlanStatistic.objects.get_or_create(
@@ -381,7 +383,12 @@ def compute_plan_sctatics(year):
         ]))
 
         lowest_rank_diffs = list(sorted([
-            x.lowest_rank
+            fetch_rank_difference_value(
+                x.lowest_rank,
+                x.admission_batch.batch_name,
+                x.subject_type.type_name,
+                x.admission_year.year
+            )
             for x in target_plans.exclude(lowest_rank=0)
         ]))
 
@@ -401,7 +408,12 @@ def compute_plan_sctatics(year):
         ]))
 
         highest_rank_diffs = list(sorted([
-            x.highest_rank
+            fetch_rank_difference_value(
+                x.highest_rank,
+                x.admission_batch.batch_name,
+                x.subject_type.type_name,
+                x.admission_year.year
+            )
             for x in target_plans.exclude(highest_rank=0)
         ]))
 
@@ -421,7 +433,12 @@ def compute_plan_sctatics(year):
         ]))
 
         average_rank_diffs = list(sorted([
-            x.average_rank
+            fetch_rank_difference_value(
+                x.average_rank,
+                x.admission_batch.batch_name,
+                x.subject_type.type_name,
+                x.admission_year.year
+            )
             for x in target_plans.exclude(average_rank=0)
         ]))
 

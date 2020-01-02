@@ -67,10 +67,18 @@ class HomePage2View(APIView):
             '2019'
         )
 
+        rank_difference_value = fetch_rank_difference_value(
+            int(serializer.data.get('personal_rank')),
+            serializer.data.get('batch_name'),
+            serializer.data.get('subject_type'),
+            '2019'
+        )
+
         result = {
             'personal_rank': serializer.data.get('personal_rank'),
             'subject_type': serializer.data.get('subject_type_name'),
-            'recommends': recommends
+            'recommends': recommends,
+            'rank_difference_value':rank_difference_value,
         }
 
         return Response({'serializer': serializer, 'result': result})
