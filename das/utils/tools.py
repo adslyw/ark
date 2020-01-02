@@ -189,7 +189,7 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
         'r5',
         'r6',
         'r7',
-    ))
+    ).order_by('r1'))
 
     t5 = list(ps.filter(
         r3__gt=rank,
@@ -204,7 +204,7 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
         'r5',
         'r6',
         'r7',
-    ))
+    ).order_by('r2'))
 
     t4 = list(ps.filter(
         r4__gt=rank,
@@ -219,7 +219,7 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
         'r5',
         'r6',
         'r7',
-    ))
+    ).order_by('r3'))
 
     t3 = list(ps.filter(
         r5__gt=rank,
@@ -234,7 +234,7 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
         'r5',
         'r6',
         'r7',
-    ))
+    ).order_by('r4'))
 
     t2 = list(ps.filter(
         r6__gt=rank,
@@ -249,7 +249,7 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
         'r5',
         'r6',
         'r7',
-    ))
+    ).order_by('r5'))
 
     t1 = list(ps.filter(
         r7__gte=rank,
@@ -264,7 +264,7 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
         'r5',
         'r6',
         'r7',
-    ))
+    ).order_by('r6'))
     result['t1'] = t1
     result['t2'] = t2
     result['t3'] = t3
