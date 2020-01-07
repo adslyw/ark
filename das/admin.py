@@ -246,6 +246,18 @@ class PlanStatisticAdmin(admin.ModelAdmin):
         'r6',
         'r7',
     ]
+
+    search_fields = [
+        'univercity_code__univercity_name_alias',
+        'univercity_code__code',
+    ]
+
+    list_filter = [
+        'admission_year__year',
+        'admission_batch__batch_name',
+        'subject_type__type_name',
+    ]
+
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related(
             'univercity_code',
