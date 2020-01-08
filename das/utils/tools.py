@@ -167,8 +167,8 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
 def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year):
     result = {}
     print(rank, batch_name, subject_type_name, year)
-    if rank < 0:
-        return result
+    # if rank < 0:
+    #     return result
 
     ps = PlanStatistic.objects.filter(
         admission_batch__batch_name=batch_name,

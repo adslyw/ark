@@ -60,15 +60,15 @@ class HomePage2View(APIView):
         if not serializer.is_valid():
             return Response({'serializer': serializer})
 
-        recommends = fetch_recommend_univercity_by_rank(
+        rank_difference_value = fetch_rank_difference_value(
             int(serializer.data.get('personal_rank')),
             serializer.data.get('batch_name'),
             serializer.data.get('subject_type'),
             '2019'
         )
 
-        rank_difference_value = fetch_rank_difference_value(
-            int(serializer.data.get('personal_rank')),
+        recommends = fetch_recommend_univercity_by_rank(
+            rank_difference_value,
             serializer.data.get('batch_name'),
             serializer.data.get('subject_type'),
             '2019'

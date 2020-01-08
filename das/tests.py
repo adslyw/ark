@@ -472,7 +472,7 @@ def compute_plan_sctatics(year):
         r4 = r_list[2]
         r3 = r_list[1]
         r2 = r_list[0]
-        r1 = int(r_list[0] * 0.9)
+        r1 = int(r_list[0] * 0.9) if r_list[0] > 0 else int(r_list[0] * 1.1)
         print(plan.univercity_code, [d1, d2, d3, d4, d5, d6, d7, r1, r2, r3, r4, r5, r6, r7])
 
         plan_statistic.d1 = d1
