@@ -72,6 +72,9 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'd1',
         'd2',
         'd3',
@@ -88,6 +91,9 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'd1',
         'd2',
         'd3',
@@ -104,6 +110,9 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'd1',
         'd2',
         'd3',
@@ -120,6 +129,9 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'd1',
         'd2',
         'd3',
@@ -136,6 +148,9 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'd1',
         'd2',
         'd3',
@@ -152,6 +167,9 @@ def fetch_recommend_univercity(score_difference_value, batch_name, subject_type_
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'd1',
         'd2',
         'd3',
@@ -182,6 +200,9 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'r1',
         'r2',
         'r3',
@@ -197,6 +218,9 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'r1',
         'r2',
         'r3',
@@ -212,6 +236,9 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'r1',
         'r2',
         'r3',
@@ -227,6 +254,9 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'r1',
         'r2',
         'r3',
@@ -242,6 +272,9 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'r1',
         'r2',
         'r3',
@@ -257,6 +290,9 @@ def fetch_recommend_univercity_by_rank(rank, batch_name, subject_type_name, year
     ).values_list(
         'univercity_code__code',
         'univercity_code__univercity__name',
+        'univercity_code__univercity__total_rank',
+        'univercity_code__univercity__city__name',
+        'univercity_code__univercity__city__province__name',
         'r1',
         'r2',
         'r3',
