@@ -5,3 +5,5 @@ django-crispy-forms==1.8.1
 djangorestframework==3.10.3
 django-filter==2.2.0
 django-rest-swagger==2.2.0
+django==2.2.6
+django-tagit-labels==0.6.0
